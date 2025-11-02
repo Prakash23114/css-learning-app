@@ -5,6 +5,7 @@ import Sidebar from "@/components/sidebar"
 import Content from "@/components/content"
 import Quiz from "@/components/quiz"
 import DarkModeToggle from "@/components/dark-mode-toggle"
+import Projects from "@/components/projects" // Import Projects component
 import lessonsData from "@/data/lessons"
 import quizData from "@/data/quiz"
 
@@ -13,6 +14,8 @@ export default function Home() {
   const [selectedLesson, setSelectedLesson] = useState(null)
   const [selectedSection, setSelectedSection] = useState("bootstrap")
   const [showQuiz, setShowQuiz] = useState(false)
+  const [showProject, setShowProject] = useState(false) // Added project state
+  const [projectId, setProjectId] = useState(null) // Added project ID state
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -38,17 +41,27 @@ export default function Home() {
   const handleSelectLesson = (lesson) => {
     setSelectedLesson(lesson)
     setShowQuiz(false)
+    setShowProject(false) // Reset project state
   }
 
   const handleSectionClick = (section) => {
     setSelectedSection(section)
     setSelectedLesson(null)
     setShowQuiz(false)
+    setShowProject(false) // Reset project state
   }
 
   const handleQuizClick = () => {
     setShowQuiz(true)
     setSelectedLesson(null)
+    setShowProject(false) // Reset project state
+  }
+
+  const handleProjectClick = (section) => {
+    setProjectId(section)
+    setShowProject(true)
+    setSelectedLesson(null)
+    setShowQuiz(false)
   }
 
   if (!mounted) return null
@@ -73,11 +86,16 @@ export default function Home() {
             onSelectLesson={handleSelectLesson}
             onSelectSection={handleSectionClick}
             onQuizClick={handleQuizClick}
+            onProjectClick={handleProjectClick} // Pass project click handler
           />
 
           {/* Content Area */}
           <div className="flex-1 overflow-auto">
-            {showQuiz ? (
+            {showProject ? (
+              <div>
+                <Projects projectId={projectId} onClose={() => setShowProject(false)} />
+              </div>
+            ) : showQuiz ? (
               <Quiz quizData={quizData[selectedSection]} section={selectedSection} />
             ) : selectedLesson ? (
               <Content lesson={selectedLesson} />

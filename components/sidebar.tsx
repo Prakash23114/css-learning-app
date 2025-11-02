@@ -3,7 +3,14 @@
 import { useState } from "react"
 import { ChevronDown, ChevronRight, FileText, Brain } from "lucide-react"
 
-export default function Sidebar({ lessonsData, selectedSection, onSelectLesson, onSelectSection, onQuizClick }) {
+export default function Sidebar({
+  lessonsData,
+  selectedSection,
+  onSelectLesson,
+  onSelectSection,
+  onQuizClick,
+  onProjectClick,
+}) {
   const [expandedSections, setExpandedSections] = useState({
     bootstrap: true,
     grid: false,
@@ -72,7 +79,10 @@ export default function Sidebar({ lessonsData, selectedSection, onSelectLesson, 
                 <Brain size={16} />
                 Quiz
               </button>
-              <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded text-sm font-medium bg-primary text-primary-foreground hover:opacity-90 transition-opacity">
+              <button
+                onClick={() => onProjectClick(section)}
+                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded text-sm font-medium bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+              >
                 <FileText size={16} />
                 Project
               </button>
